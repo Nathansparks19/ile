@@ -42,6 +42,11 @@ textarea.input { resize: vertical; min-height: 110px; }
 
 .group { padding-top: 8px; }
 .group + .group { border-top: 1px solid var(--line); padding-top: 24px; }
+.groupLead { margin: -8px 0 20px; color: var(--muted); font-size: 15px; }
+.money { position: relative; }
+.money span { position: absolute; left: 16px; top: 14px; color: var(--muted); font-size: 16px; }
+.money .input { padding-left: 34px; margin-bottom: 6px; }
+.hint { margin: 0 0 22px; font-size: 14px; color: var(--muted); }
 .groupTitle { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--green); }
 
 .error {

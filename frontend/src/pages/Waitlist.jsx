@@ -49,7 +49,15 @@ const EMPTY = {
   how_find: '', search_duration: '', scammed: '', payment_type: '', agent_fee: '',
   bad_experience: '', biggest_frustration: '', places_viewed: '', monthly_payment: '',
   trust_factor: '', would_use: '',
+  // Current rent (optional). Used only in anonymous totals to estimate fair rents.
+  rent_area: '', rent_type: '', rent_bedrooms: '', rent_yearly: '', rent_since: '',
 }
+
+const RENT_TYPES = ['Flat or apartment', 'Mini flat', 'Self-contain', 'Room', 'Duplex', 'House or bungalow']
+const RENT_BEDROOMS = ['Self-contain or room', '1', '2', '3', '4', '5 or more']
+const THIS_YEAR = new Date().getFullYear()
+const RENT_SINCE = [...Array(6)].map((_, i) => String(THIS_YEAR - i)).concat(['Before ' + (THIS_YEAR - 5)])
+const toNumber = v => { const n = Number(String(v).replace(/\D/g, '')); return n > 0 ? n : null }
 
 const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
 
@@ -104,7 +112,13 @@ export default function Waitlist() {
           Authorization: `Bearer ${SUPABASE_KEY}`,
           Prefer: 'return=minimal',
         },
-        body: JSON.stringify({ ...form, name: form.name.trim(), email: form.email.trim().toLowerCase() }),
+        body: JSON.stringify({
+          ...form,
+          name: form.name.trim(),
+          email: form.email.trim().toLowerCase(),
+          rent_area: form.rent_area.trim(),
+          rent_yearly: toNumber(form.rent_yearly),
+        }),
       })
       if (res.ok) {
         setDone(true)
@@ -181,6 +195,37 @@ export default function Waitlist() {
               <h2 className={styles.cardTitle}>Tell us about renting</h2>
               <p className={styles.cardLead}>Answer as many as you like. Every answer helps us build the right thing.</p>
               {error && <p className={styles.error} role="alert">{error}</p>}
+
+              {form.role !== 'Landlord' && (
+                <div className={styles.group}>
+                  <h3 className={styles.groupTitle}>Your current rent</h3>
+                  <p className={styles.groupLead}>
+                    This helps us work out what fair rent looks like in each area today. It’s only ever used
+                    in anonymous totals, never shown with your name.
+                  </p>
+
+                  <label className={styles.label} htmlFor="rent_area">Area you live in</label>
+                  <input id="rent_area" className={styles.input} value={form.rent_area}
+                    onChange={e => set('rent_area', e.target.value)} placeholder="e.g. Yaba, Lekki Phase 1, Gwarinpa" />
+
+                  <Choice name="rent_type" label="Type of home" options={RENT_TYPES} value={form.rent_type} onChange={v => set('rent_type', v)} />
+                  <Choice name="rent_bedrooms" label="Bedrooms" options={RENT_BEDROOMS} value={form.rent_bedrooms} onChange={v => set('rent_bedrooms', v)} />
+
+                  <label className={styles.label} htmlFor="rent_yearly">Rent you pay per year</label>
+                  <div className={styles.money}>
+                    <span aria-hidden="true">₦</span>
+                    <input id="rent_yearly" className={styles.input} inputMode="numeric" autoComplete="off"
+                      value={form.rent_yearly} placeholder="1,500,000"
+                      onChange={e => {
+                        const d = e.target.value.replace(/\D/g, '')
+                        set('rent_yearly', d ? Number(d).toLocaleString('en-NG') : '')
+                      }} />
+                  </div>
+                  <p className={styles.hint}>If you pay monthly, multiply by 12. Leave out agent and legal fees.</p>
+
+                  <Choice name="rent_since" label="Year this rent started" options={RENT_SINCE} value={form.rent_since} onChange={v => set('rent_since', v)} />
+                </div>
+              )}
 
               {SURVEY.map(g => (
                 <div key={g.group} className={styles.group}>
