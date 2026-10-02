@@ -1,19 +1,81 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+/* ── Ilé design tokens ─────────────────────────────── */
+:root {
+  --green: #0E3B2A;      /* brand, primary actions */
+  --green-2: #1F5C43;    /* hover, secondary green */
+  --mint: #E7F1EA;       /* soft green surfaces */
+  --gold: #E2A12B;       /* the accent: the roof over the e, highlights */
+  --gold-soft: #FBEFD6;
+  --ink: #12231A;        /* text */
+  --muted: #56645C;      /* secondary text */
+  --line: #DCE3DE;       /* borders */
+  --paper: #FFFFFF;
+  --wash: #F4F7F5;       /* alternate section background */
+  --danger: #B42318;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  --font: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --wrap: 1140px;
+  --gutter: clamp(20px, 5vw, 48px);
 }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: #FAFAF8;
-  color: #1A1A1A;
+  margin: 0;
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
 }
 
-.font-serif {
-  font-family: 'Playfair Display', serif;
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--gold); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+.il-wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter); }
+
+/* Display type: normal width, heavy weight, tight spacing */
+.il-display {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+.il-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 16px/1 var(--font);
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.il-btn-primary { background: var(--green); color: #fff; }
+.il-btn-primary:hover { background: var(--green-2); }
+.il-btn-ghost { background: transparent; color: var(--green); border-color: var(--line); }
+.il-btn-ghost:hover { border-color: var(--green); }
+.il-btn:disabled { opacity: .6; cursor: not-allowed; }
+.il-btn-block { width: 100%; }
+
+.il-link { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Wordmark: the accent is a roof ────────────────── */
+.il-mark {
+  display: inline-flex; align-items: baseline;
+  font-weight: 900; font-size: 28px; letter-spacing: -0.04em;
+  color: var(--green); text-decoration: none; line-height: 1;
+}
+.il-mark .roof { position: relative; display: inline-block; }
+.il-mark .roof::before {
+  content: ""; position: absolute; left: 8%; right: 0; top: -0.3em; height: 0.15em;
+  background: var(--gold); border-radius: 2px; transform: skewY(-18deg); transform-origin: left;
 }

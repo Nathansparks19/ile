@@ -1,0 +1,15 @@
+.footer { background: var(--green); color: #DDE9E1; padding-top: 56px; }
+.inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; padding-bottom: 40px; }
+.brand { max-width: 380px; }
+.brand :global(.il-mark) { color: #fff; }
+.brand p { margin: 16px 0 0; font-size: 15px; line-height: 1.6; }
+.links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 15px; }
+.links a { color: #fff; text-decoration: none; }
+.links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.base {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+  padding-top: 20px; padding-bottom: 28px; border-top: 1px solid rgba(255,255,255,.15);
+  font-size: 14px; color: #A9C2B3;
+}
+.base p { margin: 0; }
+.base a { color: #fff; }

@@ -1,322 +1,197 @@
-import { Search, MapPin, Shield, CreditCard, Star, ArrowRight, CheckCircle } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import styles from './Landing.module.css'
 
-const container = {
-  maxWidth: '1100px',
-  margin: '0 auto',
-  padding: '0 40px',
+const MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
+
+const problems = [
+  {
+    title: 'A year’s rent, all at once',
+    text: 'Most landlords ask for one or two years upfront. Saving that much while still paying your current rent can take years.',
+  },
+  {
+    title: 'Fees on top of fees',
+    text: 'Agent fees, legal fees and inspection fees add a large amount to what you pay before you even get the keys.',
+  },
+  {
+    title: 'Homes that don’t exist',
+    text: 'Fake listings, and agents who disappear after collecting an inspection fee, are common enough that everyone knows someone it happened to.',
+  },
+]
+
+const steps = [
+  {
+    title: 'Find a home we’ve checked',
+    text: 'Every listing is inspected in person before it goes live, so the photos match the place and the landlord is real.',
+  },
+  {
+    title: 'Apply online',
+    text: 'Send your application on Ilé. No agent in the middle and no fee to apply.',
+  },
+  {
+    title: 'Move in and pay monthly',
+    text: 'Once you’re approved, Ilé pays your landlord the year upfront and you pay Ilé month by month.',
+  },
+]
+
+const faqs = [
+  {
+    q: 'When does Ilé launch?',
+    a: 'We don’t have a date yet. People on the waitlist will hear first, before anyone else.',
+  },
+  {
+    q: 'Can I pay my rent monthly today?',
+    a: 'Not yet. Monthly rent is the core of what we’re building. When it launches, it will depend on the property and a simple approval check.',
+  },
+  {
+    q: 'Which cities will you start in?',
+    a: 'We’ll start where the waitlist shows the most demand, so tell us your city when you join.',
+  },
+  {
+    q: 'How will homes be verified?',
+    a: 'Our plan is to inspect every home in person and confirm the landlord’s identity before a listing goes live.',
+  },
+  {
+    q: 'Does it cost anything to join?',
+    a: 'No. Joining the waitlist is free.',
+  },
+  {
+    q: 'What do you do with my details?',
+    a: 'We use your email only to tell you about the launch, and your answers only to decide what to build. We don’t sell or share them.',
+  },
+]
+
+function RentSplit() {
+  return (
+    <figure className={styles.split} aria-labelledby="split-caption">
+      <div className={styles.splitRow}>
+        <p className={styles.splitLabel}>The usual way</p>
+        <p className={styles.splitAmount}>₦1,800,000</p>
+        <p className={styles.splitNote}>due before you move in, plus agent and legal fees</p>
+      </div>
+
+      <div className={styles.bar} aria-hidden="true">
+        {MONTHS.map((m, i) => (
+          <span key={i} className={styles.seg} style={{ '--i': i }}>
+            <span className={styles.segLetter}>{m}</span>
+          </span>
+        ))}
+      </div>
+
+      <div className={styles.splitRow}>
+        <p className={styles.splitLabel}>With Ilé</p>
+        <p className={`${styles.splitAmount} ${styles.splitAmountIle}`}>₦150,000 <span>a month</span></p>
+      </div>
+
+      <figcaption id="split-caption" className={styles.splitCaption}>
+        Example for a flat that costs ₦1.8m a year. Monthly plans will depend on the property and an approval check.
+      </figcaption>
+    </figure>
+  )
 }
 
 export default function Landing() {
-  const [search, setSearch] = useState('')
-  const navigate = useNavigate()
-
-  const handleSearch = () => {
-    if (search) navigate(`/listings?search=${search}`)
-    else navigate('/listings')
-  }
-
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAF8', fontFamily: 'DM Sans, sans-serif', overflowX: 'hidden' }}>
+    <>
       <Navbar />
-
-      {/* Hero — Split Layout */}
-      <section style={{ backgroundColor: '#FAFAF8' }}>
-        <div style={{ ...container, paddingTop: '80px', paddingBottom: '80px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
-          {/* Left */}
-          <div>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              fontSize: '13px', fontWeight: 600, color: '#0B4D2E',
-              backgroundColor: '#E8F5EE', padding: '6px 14px',
-              borderRadius: '999px', marginBottom: '28px',
-              border: '1px solid #C3E0CE'
-            }}>
-              <span style={{ width: '6px', height: '6px', backgroundColor: '#0B4D2E', borderRadius: '50%', display: 'inline-block' }} />
-              Nigeria's Most Trusted Rental Platform
-            </span>
-
-            <h1 style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: '56px', fontWeight: 800,
-              color: '#0D1C12', lineHeight: 1.1,
-              marginBottom: '20px'
-            }}>
-              Find a Home You'll <span style={{ color: '#0B4D2E', fontStyle: 'italic' }}>Love</span> in Nigeria
-            </h1>
-
-            <p style={{ fontSize: '17px', color: '#57534e', lineHeight: 1.7, marginBottom: '36px', maxWidth: '440px' }}>
-              Verified listings across Lagos, Abuja and Port Harcourt. Pay rent monthly — your landlord gets the full amount upfront.
+      <main>
+        {/* ── Hero ─────────────────────────────── */}
+        <section className={`il-wrap ${styles.hero}`}>
+          <div className={styles.heroText}>
+            <p className={styles.status}><span className={styles.dot} aria-hidden="true" /> Launching soon</p>
+            <h1 className={`il-display ${styles.title}`}>Verified homes. Rent you pay monthly.</h1>
+            <p className={styles.lead}>
+              Ilé is a new way to rent in Nigeria. Every home is checked in person before it’s listed,
+              there are no agent fees, and you pay your rent month by month instead of a year upfront.
             </p>
-
-            {/* Search */}
-            <div style={{
-              display: 'flex', alignItems: 'center',
-              backgroundColor: 'white', borderRadius: '16px',
-              padding: '8px 8px 8px 16px',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-              border: '1px solid #e7e5e4',
-              marginBottom: '24px'
-            }}>
-              <Search size={18} style={{ color: '#a8a29e', marginRight: '10px', flexShrink: 0 }} />
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                placeholder="Search by location, e.g. Lekki, Abuja..."
-                style={{ flex: 1, outline: 'none', border: 'none', fontSize: '15px', color: '#1A1A1A', backgroundColor: 'transparent' }}
-              />
-              <button
-                onClick={handleSearch}
-                style={{
-                  backgroundColor: '#0B4D2E', color: 'white',
-                  border: 'none', padding: '12px 24px',
-                  borderRadius: '12px', fontWeight: 600,
-                  fontSize: '15px', cursor: 'pointer', flexShrink: 0
-                }}
-              >
-                Search
-              </button>
+            <div className={styles.actions}>
+              <Link to="/waitlist" className="il-btn il-btn-primary">Join the waitlist</Link>
+              <a href="#how" className="il-btn il-btn-ghost">See how it works</a>
             </div>
+            <p className={styles.small}>Free to join. We’ll only email you about the launch.</p>
+          </div>
+          <RentSplit />
+        </section>
 
-            {/* Trust signals */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              {['No agent fees', 'Verified listings', 'Monthly payments'].map(item => (
-                <span key={item} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#78716c', fontWeight: 500 }}>
-                  <CheckCircle size={14} style={{ color: '#0B4D2E' }} /> {item}
-                </span>
+        {/* ── Problems ─────────────────────────── */}
+        <section className={styles.problems}>
+          <div className="il-wrap">
+            <h2 className={`il-display ${styles.h2}`}>Renting here shouldn’t be this hard</h2>
+            <div className={styles.problemList}>
+              {problems.map(p => (
+                <article key={p.title} className={styles.problem}>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
+                </article>
               ))}
             </div>
           </div>
+        </section>
 
-          {/* Right — Image Stack */}
-          <div style={{ position: 'relative', height: '520px' }}>
-            <div style={{
-              position: 'absolute', top: 0, right: 0,
-              width: '88%', height: '75%',
-              borderRadius: '24px', overflow: 'hidden',
-              boxShadow: '0 24px 60px rgba(0,0,0,0.15)'
-            }}>
-              <img
-                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"
-                alt="Property"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </div>
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0,
-              width: '60%', height: '45%',
-              borderRadius: '20px', overflow: 'hidden',
-              boxShadow: '0 16px 40px rgba(0,0,0,0.12)',
-              border: '4px solid #FAFAF8'
-            }}>
-              <img
-                src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500"
-                alt="Property"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </div>
-            {/* Floating card */}
-            <div style={{
-              position: 'absolute', top: '52%', left: '10%',
-              backgroundColor: 'white', borderRadius: '16px',
-              padding: '14px 18px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-              display: 'flex', alignItems: 'center', gap: '12px',
-              zIndex: 10
-            }}>
-              <div style={{ width: '40px', height: '40px', backgroundColor: '#E8F5EE', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <MapPin size={18} style={{ color: '#0B4D2E' }} />
-              </div>
-              <div>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#0D1C12', marginBottom: '2px' }}>Lekki Phase 1</p>
-                <p style={{ fontSize: '12px', color: '#78716c' }}>₦125,000/month</p>
-              </div>
-            </div>
+        {/* ── How it works ─────────────────────── */}
+        <section id="how" className={`il-wrap ${styles.section}`}>
+          <div className={styles.sectionHead}>
+            <h2 className={`il-display ${styles.h2}`}>How Ilé will work</h2>
+            <p>We’re building this now. The waitlist tells us where to launch first and what matters most to you.</p>
           </div>
-        </div>
-      </section>
+          <ol className={styles.steps}>
+            {steps.map((s, i) => (
+              <li key={s.title} className={styles.step}>
+                <span className={styles.stepNum} aria-hidden="true">{i + 1}</span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-      {/* Stats Bar */}
-      <section style={{ backgroundColor: '#0B4D2E' }}>
-        <div style={{ ...container, paddingTop: '40px', paddingBottom: '40px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px' }}>
-          {[
-            { value: '500+', label: 'Verified Listings' },
-            { value: '10k+', label: 'Happy Tenants' },
-            { value: '3', label: 'Cities Covered' },
-            { value: '98%', label: 'Satisfaction Rate' },
-          ].map(({ value, label }) => (
-            <div key={label} style={{ textAlign: 'center' }}>
-              <p style={{ fontSize: '36px', fontWeight: 800, color: '#E8A020', fontFamily: 'Playfair Display, serif', marginBottom: '4px' }}>{value}</p>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>{label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section style={{ backgroundColor: 'white' }}>
-        <div style={{ ...container, paddingTop: '96px', paddingBottom: '96px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+        {/* ── Landlords ────────────────────────── */}
+        <section id="landlords" className={styles.landlords}>
+          <div className={`il-wrap ${styles.landlordsInner}`}>
             <div>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#0B4D2E', textTransform: 'uppercase', letterSpacing: '1px' }}>Why Ilé</span>
-              <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '42px', fontWeight: 800, color: '#0D1C12', marginTop: '12px', marginBottom: '20px', lineHeight: 1.2 }}>
-                Renting in Nigeria, finally done right
-              </h2>
-              <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '40px' }}>
-                We built Ilé to solve the real problems Nigerians face when looking for a home — fake listings, agent wahala, and the burden of paying a full year upfront.
+              <h2 className={`il-display ${styles.h2}`}>For landlords</h2>
+              <p className={styles.landlordLead}>
+                Get your full year’s rent upfront, from tenants who’ve been checked, without going through an agent.
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {[
-                  { title: 'Verified Listings Only', desc: 'Every property is physically inspected before going live.' },
-                  { title: 'Pay Rent Monthly', desc: 'We finance your rent so you pay monthly. Your landlord gets paid upfront.' },
-                  { title: 'No Hidden Fees', desc: 'What you see is what you pay. No agent commissions, no surprises.' },
-                ].map(({ title, desc }) => (
-                  <div key={title} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <div style={{ width: '24px', height: '24px', backgroundColor: '#E8F5EE', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px' }}>
-                      <CheckCircle size={14} style={{ color: '#0B4D2E' }} />
-                    </div>
-                    <div>
-                      <p style={{ fontWeight: 700, color: '#0D1C12', marginBottom: '4px' }}>{title}</p>
-                      <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.6 }}>{desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Link to="/waitlist?role=Landlord" className={`il-btn ${styles.goldBtn}`}>Join as a landlord</Link>
             </div>
-            <div style={{ position: 'relative', height: '480px' }}>
-              <div style={{ width: '100%', height: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.12)' }}>
-                <img
-                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
-                  alt="Interior"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-              <div style={{
-                position: 'absolute', bottom: '24px', left: '-24px',
-                backgroundColor: 'white', borderRadius: '16px',
-                padding: '16px 20px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              }}>
-                <p style={{ fontSize: '12px', color: '#78716c', marginBottom: '4px' }}>Monthly payment</p>
-                <p style={{ fontSize: '22px', fontWeight: 800, color: '#0B4D2E', fontFamily: 'Playfair Display, serif' }}>₦100,000</p>
-                <p style={{ fontSize: '12px', color: '#a8a29e' }}>instead of ₦1.2M upfront</p>
-              </div>
-            </div>
+            <ul className={styles.landlordList}>
+              <li><strong>Paid upfront.</strong> You receive the year’s rent at the start, even when your tenant pays Ilé monthly.</li>
+              <li><strong>Tenants checked first.</strong> Applicants are verified before they reach you.</li>
+              <li><strong>Less chasing.</strong> Ilé handles the monthly collection, so you’re not left following up.</li>
+            </ul>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How it works */}
-      <section style={{ backgroundColor: '#FAFAF8' }}>
-        <div style={{ ...container, paddingTop: '96px', paddingBottom: '96px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: '#0B4D2E', textTransform: 'uppercase', letterSpacing: '1px' }}>Process</span>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '42px', fontWeight: 800, color: '#0D1C12', marginTop: '12px' }}>
-              Move in within days, not months
-            </h2>
+        {/* ── FAQ ──────────────────────────────── */}
+        <section id="faq" className={`il-wrap ${styles.section}`}>
+          <div className={styles.sectionHead}>
+            <h2 className={`il-display ${styles.h2}`}>Questions</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }}>
-            {[
-              { step: '01', title: 'Browse & Search', desc: 'Search verified listings by location, price, and type across Lagos, Abuja, and Port Harcourt.', color: '#E8F5EE' },
-              { step: '02', title: 'Apply Online', desc: 'Submit your application in minutes. No agents, no back and forth, no unnecessary stress.', color: '#FDF6EC' },
-              { step: '03', title: 'Move In & Pay Monthly', desc: 'Get approved, move in, and start paying monthly. We handle the landlord upfront payment.', color: '#E8F5EE' },
-            ].map(({ step, title, desc, color }) => (
-              <div key={step} style={{ backgroundColor: color, borderRadius: '24px', padding: '40px' }}>
-                <span style={{ fontSize: '48px', fontWeight: 900, color: '#0B4D2E', fontFamily: 'Playfair Display, serif', opacity: 0.15, display: 'block', marginBottom: '16px' }}>{step}</span>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0D1C12', marginBottom: '12px' }}>{title}</h3>
-                <p style={{ color: '#78716c', lineHeight: 1.6, fontSize: '15px' }}>{desc}</p>
-              </div>
+          <div className={styles.faq}>
+            {faqs.map(f => (
+              <details key={f.q} className={styles.faqItem}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Testimonial */}
-      <section style={{ backgroundColor: '#0B4D2E' }}>
-        <div style={{ ...container, paddingTop: '96px', paddingBottom: '96px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
-            <div>
-              <div style={{ display: 'flex', gap: '4px', marginBottom: '24px' }}>
-                {[1,2,3,4,5].map(i => <Star key={i} size={20} style={{ color: '#E8A020', fill: '#E8A020' }} />)}
-              </div>
-              <p style={{ fontSize: '26px', color: 'white', lineHeight: 1.6, marginBottom: '32px', fontFamily: 'Playfair Display, serif' }}>
-                "Ilé made finding a verified apartment in Lekki so easy. I paid my first month and moved in within a week. No agent stress, no wahala."
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#E8A020', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>AO</div>
-                <div>
-                  <p style={{ fontWeight: 600, color: 'white' }}>Amaka Okonkwo</p>
-                  <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>Tenant, Lekki Phase 1</p>
-                </div>
-              </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              {[
-                { value: '4.9/5', label: 'Average rating' },
-                { value: '< 7 days', label: 'Average move-in time' },
-                { value: '0', label: 'Agent fees' },
-                { value: '100%', label: 'Verified listings' },
-              ].map(({ value, label }) => (
-                <div key={label} style={{ backgroundColor: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '24px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <p style={{ fontSize: '28px', fontWeight: 800, color: '#E8A020', fontFamily: 'Playfair Display, serif', marginBottom: '4px' }}>{value}</p>
-                  <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{label}</p>
-                </div>
-              ))}
-            </div>
+        {/* ── Final call ───────────────────────── */}
+        <section className={styles.final}>
+          <div className={`il-wrap ${styles.finalInner}`}>
+            <h2 className={`il-display ${styles.finalTitle}`}>Help shape Ilé</h2>
+            <p>
+              Joining takes 30 seconds. If you have three more minutes, tell us about your renting experience.
+              Your answers decide what we build first.
+            </p>
+            <Link to="/waitlist" className="il-btn il-btn-primary">Join the waitlist</Link>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{ backgroundColor: '#FDF6EC' }}>
-        <div style={{ ...container, paddingTop: '96px', paddingBottom: '96px', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '52px', fontWeight: 800, color: '#0D1C12', marginBottom: '16px', lineHeight: 1.1 }}>
-            Your next home is waiting
-          </h2>
-          <p style={{ fontSize: '18px', color: '#78716c', marginBottom: '40px', maxWidth: '500px', margin: '0 auto 40px' }}>
-            Join thousands of Nigerians who found their perfect home through Ilé.
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-            <Link to="/listings" style={{
-              backgroundColor: '#0B4D2E', color: 'white',
-              fontWeight: 700, padding: '16px 32px',
-              borderRadius: '999px', fontSize: '16px',
-              display: 'flex', alignItems: 'center', gap: '8px',
-              textDecoration: 'none'
-            }}>
-              Browse Listings <ArrowRight size={18} />
-            </Link>
-            <Link to="/register" style={{
-              color: '#0B4D2E', fontWeight: 700,
-              padding: '16px 32px', borderRadius: '999px',
-              fontSize: '16px', border: '2px solid #0B4D2E',
-              textDecoration: 'none'
-            }}>
-              Create Account
-            </Link>
-          </div>
-          <Link to="/waitlist" style={{ color: '#78716c', fontSize: '14px', textDecoration: 'underline', marginTop: '20px', display: 'block' }}>
-            Not ready? Join the waitlist instead
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer style={{ backgroundColor: '#0D1C12' }}>
-        <div style={{ ...container, paddingTop: '48px', paddingBottom: '48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '24px', fontWeight: 800, color: 'white', fontFamily: 'Playfair Display, serif' }}>Ilé</span>
-          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.4)' }}>© 2026 Ilé. Built for Nigeria.</p>
-          <div style={{ display: 'flex', gap: '24px', fontSize: '14px' }}>
-            {['Privacy', 'Terms', 'Contact'].map(item => (
-              <a key={item} href="#" style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>{item}</a>
-            ))}
-          </div>
-        </div>
-      </footer>
-    </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }

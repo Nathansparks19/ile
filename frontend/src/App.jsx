@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Landing from './pages/Landing'
 import Waitlist from './pages/Waitlist'
 import ComingSoon from './pages/ComingSoon'
@@ -8,9 +9,23 @@ import ComingSoon from './pages/ComingSoon'
 // When the API is live, restore these imports and routes:
 //   Listings, PropertyDetail, Login, Register, TenantDashboard, LandlordDashboard
 
+// Makes links like /#faq scroll to the section, and resets scroll on page change.
+function ScrollManager() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1))
+      if (el) { el.scrollIntoView(); return }
+    }
+    window.scrollTo(0, 0)
+  }, [pathname, hash])
+  return null
+}
+
 function App() {
   return (
     <BrowserRouter>
+      <ScrollManager />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/waitlist" element={<Waitlist />} />
