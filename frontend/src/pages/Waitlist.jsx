@@ -137,10 +137,6 @@ export default function Waitlist() {
             ))}
           </div>
 
-          <div style={{ padding: '24px', backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e7e5e4' }}>
-            <p style={{ fontSize: '28px', fontWeight: 800, color: '#0B4D2E', fontFamily: 'Playfair Display, serif', marginBottom: '4px' }}>500+</p>
-            <p style={{ color: '#78716c', fontSize: '15px' }}>Nigerians already on the waitlist</p>
-          </div>
         </div>
 
         {/* Right — Form */}
